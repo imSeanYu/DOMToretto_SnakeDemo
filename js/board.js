@@ -5,24 +5,23 @@ class Board {
     this.snake = new Snake("N", [[4,5],[5,5],[6,5],[7,5],[8,5]]);
     this.makeGrid();
   }
-  
+
   makeGrid() {
     const grid = [];
 
-    for (let i = 0; i < 10; i++) {
+    for (let i = 0; i < 30; i++) {
       grid.push([]);
-      for (let j = 0; j < 10; j++) {
+      for (let j = 0; j < 30; j++) {
         grid[i].push(null);
       }
     }
 
     return grid;
   }
-  
-  
+
+
   isLost() {
-    // debugger
-    if (this.snake.head[0] > 9 || this.snake.head[0] < 0 || this.snake.head[1] > 9 || this.snake.head[1] < 0) {
+    if (this.snake.head[0] > 29 || this.snake.head[0] < 0 || this.snake.head[1] > 29 || this.snake.head[1] < 0) {
       return true;
     } else if (this.isArrayInArray(this.snake.segments.slice(1), this.snake.head)) {
       return true;
@@ -30,7 +29,7 @@ class Board {
       return false;
     }
   }
-  
+
   isArrayInArray(arr, item) {
     var item_as_string = JSON.stringify(item);
 

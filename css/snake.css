@@ -1,13 +1,13 @@
 body {
-  width: 520px;
-  height: 520px;
+  width: 660px;
+  height: 660px;
   display: block;
   border: 3px solid black;
 }
 
 body li {
-  width: 50px;
-  height: 50px;
+  width: 20px;
+  height: 20px;
   list-style: none;
   float: left;
   border: 1px solid #ccc;

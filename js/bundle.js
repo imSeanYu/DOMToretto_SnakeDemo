@@ -60,27 +60,11 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 0);
+/******/ 	return __webpack_require__(__webpack_require__.s = 2);
 /******/ })
 /************************************************************************/
 /******/ ([
 /* 0 */
-/***/ (function(module, exports, __webpack_require__) {
-
-const Snake = __webpack_require__(1);
-const Board = __webpack_require__(2);
-const SnakeView = __webpack_require__(3);
-
-$( () => {
-  
-  const rootEl = $("body");
-
-  new SnakeView(rootEl);
-  
-});
-
-/***/ }),
-/* 1 */
 /***/ (function(module, exports) {
 
 class Snake {
@@ -126,34 +110,33 @@ class Snake {
 module.exports = Snake;
 
 /***/ }),
-/* 2 */
+/* 1 */
 /***/ (function(module, exports, __webpack_require__) {
 
-const Snake = __webpack_require__(1);
+const Snake = __webpack_require__(0);
 
 class Board {
   constructor() {
     this.snake = new Snake("N", [[4,5],[5,5],[6,5],[7,5],[8,5]]);
     this.makeGrid();
   }
-  
+
   makeGrid() {
     const grid = [];
 
-    for (let i = 0; i < 10; i++) {
+    for (let i = 0; i < 30; i++) {
       grid.push([]);
-      for (let j = 0; j < 10; j++) {
+      for (let j = 0; j < 30; j++) {
         grid[i].push(null);
       }
     }
 
     return grid;
   }
-  
-  
+
+
   isLost() {
-    // debugger
-    if (this.snake.head[0] > 9 || this.snake.head[0] < 0 || this.snake.head[1] > 9 || this.snake.head[1] < 0) {
+    if (this.snake.head[0] > 29 || this.snake.head[0] < 0 || this.snake.head[1] > 29 || this.snake.head[1] < 0) {
       return true;
     } else if (this.isArrayInArray(this.snake.segments.slice(1), this.snake.head)) {
       return true;
@@ -161,7 +144,7 @@ class Board {
       return false;
     }
   }
-  
+
   isArrayInArray(arr, item) {
     var item_as_string = JSON.stringify(item);
 
@@ -175,28 +158,45 @@ class Board {
 
 module.exports = Board;
 
+
+/***/ }),
+/* 2 */
+/***/ (function(module, exports, __webpack_require__) {
+
+const Snake = __webpack_require__(0);
+const Board = __webpack_require__(1);
+const SnakeView = __webpack_require__(3);
+
+$( () => {
+  
+  const rootEl = $("body");
+
+  new SnakeView(rootEl);
+  
+});
+
 /***/ }),
 /* 3 */
 /***/ (function(module, exports, __webpack_require__) {
 
-const Snake = __webpack_require__(1);
-const Board = __webpack_require__(2);
+const Snake = __webpack_require__(0);
+const Board = __webpack_require__(1);
 
 class View {
   constructor($el) {
     this.board = new Board();
-    for (let i = 0; i < 100; i++) {
+    for (let i = 0; i < 900; i++) {
       $el.append("<li>");
     }
     $("li").each((idx) => {
-      $($("li")[idx]).data("pos", [Math.floor(idx/10), idx%10]);
+      $($("li")[idx]).data("pos", [Math.floor(idx/30), idx%30]);
     });
-    
+
     this.bindEvents($el);
-    
+
     this.step();
   }
-  
+
   bindEvents($el) {
     $el.on("keypress", (event) => {
       let direction = null;
@@ -210,11 +210,11 @@ class View {
       } else if (event.keyCode === 115) {
         direction = "S";
       }
-      
+
       this.board.snake.turn(direction);
     });
   }
-  
+
   step() {
     const id = setInterval( () => {
       this.board.snake.move();
@@ -222,24 +222,24 @@ class View {
       if (this.board.isLost()) {
         alert("You Lose!");
         clearInterval(id);
-        
+
       }
     }, 200);
   }
-  
+
   renderBoard() {
     $("li").each((idx) => {
       const pos = $($("li")[idx]).data("pos");
-      
+
       if (this.isArrayInArray(this.board.snake.segments, pos)) {
         $($("li")[idx]).addClass("segment");
       } else {
         $($("li")[idx]).removeClass();
       }
     });
-    
+
   }
-  
+
   isArrayInArray(arr, item) {
     var item_as_string = JSON.stringify(item);
 
@@ -253,6 +253,7 @@ class View {
 
 
 module.exports = View;
+
 
 /***/ })
 /******/ ]);
