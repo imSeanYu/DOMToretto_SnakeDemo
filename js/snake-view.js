@@ -2,22 +2,23 @@ const Snake = require("./snake.js");
 const Board = require("./board.js");
 
 class View {
-  constructor($el) {
+  constructor($lel) {
     this.board = new Board();
-    for (let i = 0; i < 900; i++) {
-      $el.append("<li>");
+    for (let i = 0; i < 400; i++) {
+      $lel.append("<li>");
     }
-    $("li").each((idx) => {
-      $($("li")[idx]).data("pos", [Math.floor(idx/30), idx%30]);
+
+    $l("li").each((el,idx) => {
+      el.setAttribute("data-pos", [Math.floor(idx/20), idx%20]);
     });
 
-    this.bindEvents($el);
+    this.bindEvents($lel);
 
     this.step();
   }
 
-  bindEvents($el) {
-    $el.on("keypress", (event) => {
+  bindEvents($lel) {
+    $lel.on("keypress", (event) => {
       let direction = null;
       // debugger
       if (event.keyCode === 97) {
@@ -37,23 +38,32 @@ class View {
   step() {
     const id = setInterval( () => {
       this.board.snake.move();
+      this.board.generateApple();
       this.renderBoard();
+
+      if (this.board.snake.head === this.board.apple) {
+        this.board.snake.eat();
+        this.board.apple = null;
+      }
       if (this.board.isLost()) {
         alert("You Lose!");
         clearInterval(id);
-
       }
     }, 200);
   }
 
   renderBoard() {
-    $("li").each((idx) => {
-      const pos = $($("li")[idx]).data("pos");
+    $l("li").each(($lidx) => {
+      const pos = this.posToInt($lidx.getAttribute("data-pos"));
 
       if (this.isArrayInArray(this.board.snake.segments, pos)) {
-        $($("li")[idx]).addClass("segment");
+        $l($lidx).addClass("segment");
       } else {
-        $($("li")[idx]).removeClass();
+        $l($lidx).removeClass("segment");
+      }
+
+      if (this.board.apple && this.isArrayInArray([this.board.apple], pos)) {
+        $l($lidx).addClass("apple");
       }
     });
 
@@ -66,6 +76,11 @@ class View {
       return JSON.stringify(ele) === item_as_string;
     });
     return contains;
+  }
+
+  posToInt(pos) {
+    var posSplitArr = pos.split(',');
+    return [parseInt(posSplitArr[0]),parseInt(posSplitArr[1])];
   }
 }
 

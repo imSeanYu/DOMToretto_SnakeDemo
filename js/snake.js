@@ -3,9 +3,9 @@ class Snake {
     this.direction = direction; // ["N", "E", "S", "W"]
     this.segments = segments; // grid coordinates
     this.head = this.segments[0];
-    
+    this.appleCounter = 0;
   }
-  
+
   move() {
     const head = this.segments[0];
     // debugger
@@ -18,21 +18,24 @@ class Snake {
     } else {
       this.segments.unshift([head[0], head[1] + 1]);
     }
-    // debugger
-    this.segments.pop();
+    if (this.appleCounter > 0) {
+      this.appleCounter--;
+    } else {
+      this.segments.pop();
+    }
     this.head = this.segments[0];
   }
-  
+
   turn(direction) {
     if (direction === null) {
       return false;
     }
-    
+
     this.direction = direction;
   }
-  
+
   eat() {
-    this.segments.concat([null, null, null]);
+    this.appleCounter+=3
   }
 
 }

@@ -72,9 +72,9 @@ class Snake {
     this.direction = direction; // ["N", "E", "S", "W"]
     this.segments = segments; // grid coordinates
     this.head = this.segments[0];
-    
+    this.appleCounter = 0;
   }
-  
+
   move() {
     const head = this.segments[0];
     // debugger
@@ -87,27 +87,31 @@ class Snake {
     } else {
       this.segments.unshift([head[0], head[1] + 1]);
     }
-    // debugger
-    this.segments.pop();
+    if (this.appleCounter > 0) {
+      this.appleCounter--;
+    } else {
+      this.segments.pop();
+    }
     this.head = this.segments[0];
   }
-  
+
   turn(direction) {
     if (direction === null) {
       return false;
     }
-    
+
     this.direction = direction;
   }
-  
+
   eat() {
-    this.segments.concat([null, null, null]);
+    this.appleCounter+=3
   }
 
 }
 
 
 module.exports = Snake;
+
 
 /***/ }),
 /* 1 */
@@ -117,16 +121,17 @@ const Snake = __webpack_require__(0);
 
 class Board {
   constructor() {
-    this.snake = new Snake("N", [[4,5],[5,5],[6,5],[7,5],[8,5]]);
+    this.snake = new Snake("N", [[14,10],[15,10],[16,10],[17,10],[18,10]]);
     this.makeGrid();
+    this.apple = null;
   }
 
   makeGrid() {
     const grid = [];
 
-    for (let i = 0; i < 30; i++) {
+    for (let i = 0; i < 20; i++) {
       grid.push([]);
-      for (let j = 0; j < 30; j++) {
+      for (let j = 0; j < 20; j++) {
         grid[i].push(null);
       }
     }
@@ -134,9 +139,27 @@ class Board {
     return grid;
   }
 
+  generateApple() {
+    var randomPos = this.generateRandomPosition();
+    while (this.snake.segments.includes(randomPos)) {
+      randomPos = this.generateRandomPosition();
+    }
+
+    if (this.apple === null) {
+      this.apple = randomPos;
+    }
+    // console.log(this.apple);
+  }
+
+  generateRandomPosition() {
+    var randomX = Math.floor(Math.random()*20);
+    var randomY = Math.floor(Math.random()*20);
+    return [randomX, randomY];
+  }
+
 
   isLost() {
-    if (this.snake.head[0] > 29 || this.snake.head[0] < 0 || this.snake.head[1] > 29 || this.snake.head[1] < 0) {
+    if (this.snake.head[0] > 19 || this.snake.head[0] < 0 || this.snake.head[1] > 19 || this.snake.head[1] < 0) {
       return true;
     } else if (this.isArrayInArray(this.snake.segments.slice(1), this.snake.head)) {
       return true;
@@ -167,13 +190,14 @@ const Snake = __webpack_require__(0);
 const Board = __webpack_require__(1);
 const SnakeView = __webpack_require__(3);
 
-$( () => {
-  
-  const rootEl = $("body");
+$l( () => {
+
+  const rootEl = $l("body");
 
   new SnakeView(rootEl);
-  
+
 });
+
 
 /***/ }),
 /* 3 */
@@ -183,22 +207,23 @@ const Snake = __webpack_require__(0);
 const Board = __webpack_require__(1);
 
 class View {
-  constructor($el) {
+  constructor($lel) {
     this.board = new Board();
-    for (let i = 0; i < 900; i++) {
-      $el.append("<li>");
+    for (let i = 0; i < 400; i++) {
+      $lel.append("<li>");
     }
-    $("li").each((idx) => {
-      $($("li")[idx]).data("pos", [Math.floor(idx/30), idx%30]);
+
+    $l("li").each((el,idx) => {
+      el.setAttribute("data-pos", [Math.floor(idx/20), idx%20]);
     });
 
-    this.bindEvents($el);
+    this.bindEvents($lel);
 
     this.step();
   }
 
-  bindEvents($el) {
-    $el.on("keypress", (event) => {
+  bindEvents($lel) {
+    $lel.on("keypress", (event) => {
       let direction = null;
       // debugger
       if (event.keyCode === 97) {
@@ -218,23 +243,32 @@ class View {
   step() {
     const id = setInterval( () => {
       this.board.snake.move();
+      this.board.generateApple();
       this.renderBoard();
+
+      if (this.board.snake.head === this.board.apple) {
+        this.board.snake.eat();
+        this.board.apple = null;
+      }
       if (this.board.isLost()) {
         alert("You Lose!");
         clearInterval(id);
-
       }
     }, 200);
   }
 
   renderBoard() {
-    $("li").each((idx) => {
-      const pos = $($("li")[idx]).data("pos");
+    $l("li").each(($lidx) => {
+      const pos = this.posToInt($lidx.getAttribute("data-pos"));
 
       if (this.isArrayInArray(this.board.snake.segments, pos)) {
-        $($("li")[idx]).addClass("segment");
+        $l($lidx).addClass("segment");
       } else {
-        $($("li")[idx]).removeClass();
+        $l($lidx).removeClass("segment");
+      }
+
+      if (this.board.apple && this.isArrayInArray([this.board.apple], pos)) {
+        $l($lidx).addClass("apple");
       }
     });
 
@@ -247,6 +281,11 @@ class View {
       return JSON.stringify(ele) === item_as_string;
     });
     return contains;
+  }
+
+  posToInt(pos) {
+    var posSplitArr = pos.split(',');
+    return [parseInt(posSplitArr[0]),parseInt(posSplitArr[1])];
   }
 }
 
