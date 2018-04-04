@@ -22,7 +22,7 @@ class Board {
 
   generateApple() {
     var randomPos = this.generateRandomPosition();
-    while (this.snake.segments.includes(randomPos)) {
+    while (this.isArrayInArray(this.snake.segments, randomPos)) {
       randomPos = this.generateRandomPosition();
     }
 

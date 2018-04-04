@@ -41,7 +41,7 @@ class View {
       this.board.generateApple();
       this.renderBoard();
 
-      if (this.board.snake.head === this.board.apple) {
+      if (this.board.snake.head[0] === this.board.apple[0] && this.board.snake.head[1] === this.board.apple[1]) {
         this.board.snake.eat();
         this.board.apple = null;
       }
@@ -64,6 +64,8 @@ class View {
 
       if (this.board.apple && this.isArrayInArray([this.board.apple], pos)) {
         $l($lidx).addClass("apple");
+      } else {
+        $l($lidx).removeClass("apple");
       }
     });
 
