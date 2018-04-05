@@ -14,7 +14,7 @@ class View {
 
     this.bindEvents($lbody);
 
-    this.step();
+    // this.step();
   }
 
 
@@ -49,6 +49,8 @@ class View {
       if (this.board.isLost()) {
         alert("You Lose!");
         clearInterval(id);
+        document.getElementById('instruction-popup').classList.remove("hidden");
+        this.board = new Board();
       }
     }, 200);
   }

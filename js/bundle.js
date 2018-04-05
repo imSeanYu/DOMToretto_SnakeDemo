@@ -190,13 +190,16 @@ const Snake = __webpack_require__(0);
 const Board = __webpack_require__(1);
 const SnakeView = __webpack_require__(3);
 
-$l( () => {
+$l(() => {
 
   const rootEl = $l("body");
   const snakeEl = $l("section");
 
-  new SnakeView(rootEl, snakeEl);
-
+  const newGame = new SnakeView(rootEl, snakeEl);
+  $("#play-button").click(function() {
+    document.getElementById('instruction-popup').classList.add("hidden");
+    newGame.step();
+  })
 });
 
 
@@ -220,7 +223,7 @@ class View {
 
     this.bindEvents($lbody);
 
-    this.step();
+    // this.step();
   }
 
 
@@ -255,6 +258,8 @@ class View {
       if (this.board.isLost()) {
         alert("You Lose!");
         clearInterval(id);
+        document.getElementById('instruction-popup').classList.remove("hidden");
+        this.board = new Board();
       }
     }, 200);
   }

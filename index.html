@@ -4,6 +4,7 @@
     <meta charset="utf-8">
     <title></title>
     <script type="text/javascript" src="./dist/dom_toretto.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script type="text/javascript" src="./js/bundle.js"></script>
     <link rel="stylesheet" href="./css/snake.css">
   </head>
@@ -15,14 +16,54 @@
       <div class="title-desc">
         The classic snake game made with <strong>DOMToretto</strong>,
         <br>
-        a JavaScript DOM-manipulation API inspired by jQuery
+        a JavaScript DOM-Manipulation API inspired by jQuery
+      </div>
+    </div>
+    <div id="instruction-popup" class="instruction-popup">
+      <div class="movement">
+        <div class="wasd-keys-image"></div>
+        <div class="wasd-keys-text">
+          <span><strong>- Direction Keys -</strong></span>
+          <br>
+          <span>W - up</span>
+          <br>
+          <span>A - left</span>
+          <br>
+          <span>S - down</span>
+          <br>
+          <span>D - right</span>
+        </div>
+      </div>
+      <div class="welcome-message">
+        Eat the red apples and grow!
+      </div>
+      <div id="play-button" class="play-button">
+        Click to <strong>START</strong>
       </div>
     </div>
     <section>
     </section>
     <div class="main">
       <div class="main-desc">
-        Each square is an 'li' DOM Node object being rendered with the snake location.
+        <div class="main-title">
+          How does it work?
+        </div>
+        <div class="ul-list">
+          <ul>Each square is a "li" DOM Node element inside the DOMNodeCollection object, captured by DOMToretto's <mark>$l('li')</mark>.</ul>
+          <ul>The snake, apple, and blank "li" elements are rendered via <mark>setInterval()</mark>, by traversing through <mark>each()</mark> DOM Node element and conditionally calling <mark>addClass()</mark> / <mark>removeClass()</mark> functions to manipulate the DOM.</ul>
+          <ul><mark>attr()</mark> function is used to either fetch or assign the position value held by the DOM, and to consequently assign the green (snake) or the red (apple) CSS class attribute.</ul>
+        </div>
+      </div>
+      <div class="right-main">
+        <a href="http://seanyu.io" class="link-underline-remove" target="_blank">
+          <div class="author">seanyu.io</div>
+        </a>
+        <a href="https://www.github.com/imSeanYu" target="_blank">
+          <div class="github_link"></div>
+        </a>
+        <a href="https://www.linkedin.com/in/seanyu925/" target="_blank">
+          <div class="linkedin_link"></div>
+        </a>
       </div>
     </div>
   </body>
