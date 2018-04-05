@@ -76,12 +76,12 @@ mark {
 
 .welcome-message {
   color: red;
-  margin-top: 20px;
+  margin-top: 0px;
 }
 
 .play-button {
   align-self: center;
-  margin-top: 20px;
+  margin-top: 10px;
   width: 200px;
   padding: 10px;
   border: 1px solid black;
@@ -90,8 +90,27 @@ mark {
   background-color: #E8E8E8;
 }
 
+.repo-link-button {
+  align-self: center;
+  margin-top: 12px;
+  width: 160px;
+  padding: 4px;
+  border: 1px solid black;
+  font-size: 16px;
+  border-radius: 6px;
+  background-color: #E8E8E8;
+  text-decoration: none;
+  color: black;
+}
+
+.repo-link-button:hover {
+  cursor: pointer;
+  background-color: lightgray;
+}
+
 .play-button:hover {
   cursor: pointer;
+  background-color: lightgray;
 }
 
 .header {
