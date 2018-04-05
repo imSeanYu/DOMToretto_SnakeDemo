@@ -90,6 +90,10 @@ mark {
   background-color: #E8E8E8;
 }
 
+.play-button:hover {
+  cursor: pointer;
+}
+
 .header {
   display: flex;
   flex-direction: column;
