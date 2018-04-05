@@ -5,7 +5,8 @@ const SnakeView = require("./snake-view.js");
 $l( () => {
 
   const rootEl = $l("body");
+  const snakeEl = $l("section");
 
-  new SnakeView(rootEl);
+  new SnakeView(rootEl, snakeEl);
 
 });

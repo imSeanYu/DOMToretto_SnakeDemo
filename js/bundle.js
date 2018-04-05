@@ -193,8 +193,9 @@ const SnakeView = __webpack_require__(3);
 $l( () => {
 
   const rootEl = $l("body");
+  const snakeEl = $l("section");
 
-  new SnakeView(rootEl);
+  new SnakeView(rootEl, snakeEl);
 
 });
 
@@ -207,7 +208,7 @@ const Snake = __webpack_require__(0);
 const Board = __webpack_require__(1);
 
 class View {
-  constructor($lel) {
+  constructor($lbody, $lel) {
     this.board = new Board();
     for (let i = 0; i < 400; i++) {
       $lel.append("<li>");
@@ -217,15 +218,16 @@ class View {
       el.setAttribute("data-pos", [Math.floor(idx/20), idx%20]);
     });
 
-    this.bindEvents($lel);
+    this.bindEvents($lbody);
 
     this.step();
   }
 
+
   bindEvents($lel) {
     $lel.on("keypress", (event) => {
       let direction = null;
-      // debugger
+
       if (event.keyCode === 97) {
         direction = "W";
       } else if (event.keyCode === 119) {
